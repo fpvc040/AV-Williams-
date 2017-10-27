@@ -84,9 +84,6 @@
 				// Perhaps more drift, but also more stable?
 				if (_arDelta < MinimumDeltaDistance || _gpsDelta < MinimumDeltaDistance)
 				{
-#if !UNITY_EDITOR
-					Unity.Utilities.Console.Instance.Log("Minimum movement not yet met!", "red");
-#endif
 					return;
 				}
 
@@ -135,9 +132,6 @@
 			Debug.Log("OFFSET: " + originOffset);
 			Debug.Log("BIASED DELTA: " + delta);
 			Debug.Log("OFFSET: " + _position);
-#else
-			Unity.Utilities.Console.Instance.Log(string.Format("Offset: {0},\tHeading: {1},\tDisance: {2},\tBias: {3}",
-			                                                   _position, _rotation, deltaDistance, bias), "orange");
 #endif
 
 			var alignment = new Alignment();
