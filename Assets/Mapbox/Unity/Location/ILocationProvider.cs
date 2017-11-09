@@ -38,4 +38,11 @@ namespace Mapbox.Unity.Location
 		/// </summary>
 		public int Accuracy;
 	}
+
+	public interface IFixedLocation
+	{
+		int LocationId { get; }
+		Location CurrentLocation { get; }
+		void SetLocation(int id, Vector2d latitudeLongitude, float heading);
+	}
 }
