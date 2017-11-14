@@ -8,11 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7dfb85d33966074ebf2acd2de263474, type: 3}
-  m_Name: HeightModifier
+  m_Script: {fileID: 11500000, guid: 25f09effe9db3dd4e9e825475d698ca3, type: 3}
+  m_Name: New Modifier Stack
   m_EditorClassIdentifier: 
-  Active: 1
-  _flatTops: 1
-  _forceHeight: 0
-  _height: 7
-  _createSideWalls: 1
+  _moveFeaturePositionTo: 0
+  MeshModifiers: []
+  GoModifiers: []
