@@ -49,6 +49,7 @@ namespace Mapbox.Unity.Ar
 
 			if (Mathf.Abs(Mathf.DeltaAngle(rotation, _averageRotation)) < _ignoreAngleThreshold)
 			{
+				Console.Instance.Log(string.Format("Average Heading: {0}", _averageRotation), "aqua");
 				_targetRotation = Quaternion.Euler(0, _averageRotation, 0);
 				_targetPosition = alignment.Position;
 
@@ -57,6 +58,10 @@ namespace Mapbox.Unity.Ar
 
 				// Add our averaged rotation.
 				_targetPosition = Quaternion.Euler(0, _averageRotation, 0) * _targetPosition;
+			}
+			else
+			{
+				Console.Instance.Log("Ignoring alignment (^) due to poor angle!", "red");
 			}
 		}
 
