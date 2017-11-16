@@ -2,7 +2,9 @@
 {
 	using System.Collections.Generic;
 	using UnityEngine;
+	using Mapbox.Unity.Location;
 	using System;
+	using Mapbox.Unity.Utilities;
 
 #if !UNITY_EDITOR
 	using Mapbox.Unity.Utilities;
@@ -15,7 +17,8 @@
 		Vector3 _position;
 
 		// These are lists for future implementation of averaging/iterating over time/distance.
-		List<Vector3> _gpsNodes = new List<Vector3>();
+		List<Location> _gpsNodes = new List<Location>();
+		List<Vector3> _gpsPositions = new List<Vector3>();
 		List<Vector3> _arNodes = new List<Vector3>();
 
 		float _arDelta;
@@ -64,16 +67,17 @@
 		/// </summary>
 		/// <param name="gpsNode">Gps node.</param>
 		/// <param name="arNode">Ar node.</param>
-		public void AddSynchronizationNodes(Vector3 gpsPosition, Vector3 arNode)
+		public void AddSynchronizationNodes(Location location, Vector3 locationPosition, Vector3 arNode)
 		{
-			_gpsNodes.Add(gpsPosition);
+			_gpsNodes.Add(location);
+			_gpsPositions.Add(locationPosition);
 			_arNodes.Add(arNode);
 
 			_count = _arNodes.Count;
 			if (_count > 1)
 			{
 				_currentArVector = _arNodes[_count - 1] - _arNodes[_count - 2];
-				_currentAbsoluteGpsVector = _gpsNodes[_count - 1] - _gpsNodes[_count - 2];
+				_currentAbsoluteGpsVector = _gpsPositions[_count - 1] - _gpsPositions[_count - 2];
 
 				//TODO: optimize with sqmag?
 				_arDelta += _currentArVector.magnitude;
@@ -84,6 +88,7 @@
 				// Perhaps more drift, but also more stable?
 				if (_arDelta < MinimumDeltaDistance || _gpsDelta < MinimumDeltaDistance)
 				{
+					Unity.Utilities.Console.Instance.Log("Minimum movement not yet met!", "red");
 					return;
 				}
 
@@ -102,8 +107,7 @@
 			_rotation = rotation;
 			_isCalibrated = true;
 
-			// HACK
-			var accuracy = 5;
+			var accuracy = _gpsNodes[_count - 1].Accuracy;
 			var delta = _currentArVector - relativeGpsVector;
 			var deltaDistance = delta.magnitude;
 
@@ -117,7 +121,7 @@
 			}
 
 			// Our new "origin" will be the difference offset between our last nodes (mapped into the same coordinate space).
-			var originOffset = _arNodes[_count - 2] - headingQuaternion * _gpsNodes[_count - 2];
+			var originOffset = _arNodes[_count - 2] - headingQuaternion * _gpsPositions[_count - 2];
 
 			// Add the weighted delta.
 			_position = (delta * bias) + originOffset;
@@ -133,6 +137,8 @@
 			Debug.Log("BIASED DELTA: " + delta);
 			Debug.Log("OFFSET: " + _position);
 #endif
+			Unity.Utilities.Console.Instance.Log(string.Format("Offset: {0},\tHeading: {1},\tDisance: {2},\tBias: {3}",
+															   _position, _rotation, deltaDistance, bias), "orange");
 
 			var alignment = new Alignment();
 			alignment.Rotation = _rotation;

@@ -144,7 +144,7 @@ MonoBehaviour:
   _deviceLocationProvider: {fileID: 114549015749242158}
   _editorLocationProvider: {fileID: 114313571966154984}
   _transformLocationProvider: {fileID: 114852715929947876}
-  _fixedLocationProvider: {fileID: 114031808588773612, guid: 1d6dfbfca571246a584b83e700ae1c45,
+  _fixedLocationProvider: {fileID: 114862208724939540, guid: 3ab4c010e527e4e1da5a505c89d07710,
     type: 2}
 --- !u!114 &114313571966154984
 MonoBehaviour:

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: SimpleMapVisualizer
   m_EditorClassIdentifier: 
   Factories:
-  - {fileID: 11400000, guid: 75343b295fbc24f03821de2419a33312, type: 2}
-  - {fileID: 11400000, guid: 5652b9f453dd24268a08faae6c7bd9f9, type: 2}
+  - {fileID: 11400000, guid: 960977e699ea5444dba10eed8839b42c, type: 2}
+  - {fileID: 11400000, guid: 9510f56836f7e42df8cb186f3815a1bf, type: 2}
   - {fileID: 11400000, guid: 065fd57a8904445109dfa182f9e1a656, type: 2}
   _loadingTexture: {fileID: 2800000, guid: e2896a92727704803a9c422b043eae89, type: 3}
