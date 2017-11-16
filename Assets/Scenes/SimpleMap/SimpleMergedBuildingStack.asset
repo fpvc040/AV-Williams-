@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Name: SimpleMergedBuildingStack
   m_EditorClassIdentifier: 
   MeshModifiers:
-  - {fileID: 11400000, guid: 9b49a4ce56c084e8299582be9fcbdb59, type: 2}
-  - {fileID: 11400000, guid: 78682c836b14e46c0b705180848dc333, type: 2}
-  - {fileID: 11400000, guid: 83eab91d2d26546288976f84b3c2412d, type: 2}
+  - {fileID: 11400000, guid: 37939723122e04fd18360a52a92ee225, type: 2}
+  - {fileID: 11400000, guid: e709d7f29f693409998919e508bdbaea, type: 2}
+  - {fileID: 11400000, guid: 7016bc78e74b44de38240a058dc3c37b, type: 2}
   GoModifiers:
-  - {fileID: 11400000, guid: 1fbe34aa29621413a88e49555c97975c, type: 2}
-  - {fileID: 11400000, guid: 106d5f356e9764a4daa4982c64ae2cd7, type: 2}
+  - {fileID: 11400000, guid: e3eda094c5f414f8d8c81137f9cee2e3, type: 2}
+  - {fileID: 11400000, guid: 06864523052c045abba78db29e4540a6, type: 2}
