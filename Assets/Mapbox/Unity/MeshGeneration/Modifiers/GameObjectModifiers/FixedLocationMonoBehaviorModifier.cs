@@ -13,6 +13,9 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 		string _syncLocationIdKey;
 
 		[SerializeField]
+		string _syncLocationNameKey;
+
+		[SerializeField]
 		string _syncLocationPositionKey;
 
 		[SerializeField]
@@ -26,6 +29,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 
 			int id = 0;
 			float heading = 0.0f;
+			string locationName = string.Empty;
 			string latitudeLongitudeString;
 			Vector2d latitudeLongitude = Vector2d.zero;
 
@@ -34,6 +38,15 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				if (!int.TryParse(feature.Properties[_syncLocationIdKey].ToString(), out id))
 				{
 					Debug.Log("No property with key : " + _syncLocationIdKey + "found!");
+				}
+			}
+
+			if (feature.Properties.ContainsKey(_syncLocationNameKey))
+			{
+				locationName = feature.Properties[_syncLocationNameKey].ToString();
+				if (string.IsNullOrEmpty(locationName))
+				{
+					Debug.Log("No property with key : " + _syncLocationNameKey + "found!");
 				}
 			}
 
@@ -51,7 +64,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				}
 			}
 
-			fixedLocationProvider.SetLocation(id, latitudeLongitude, heading);
+			fixedLocationProvider.SetLocation(id, locationName, latitudeLongitude, heading);
 		}
 	}
 }

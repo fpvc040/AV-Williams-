@@ -2,21 +2,10 @@ namespace Mapbox.Unity.Location
 {
 	using UnityEngine;
 	using System.Collections.Generic;
+	using IndoorMappingDemo;
 
 	public class SyncronizationPointsLocationProvider : AbstractLocationProvider
 	{
-		// TODO : Make this an abstract class and create concrete implementations for manual/iBeacon stuff. 
-		[SerializeField]
-		public GameObject buttonPrefab;
-
-		[SerializeField]
-		public Transform contentPanel;
-
-		[SerializeField]
-		bool _sendEvent;
-
-		[SerializeField]
-		bool _registerEvent;
 
 		private object _syncLock = new object();
 		Dictionary<int, IFixedLocation> _syncronizationPoints = new Dictionary<int, IFixedLocation>();
@@ -51,7 +40,7 @@ namespace Mapbox.Unity.Location
 			lock (_syncLock)
 			{
 				_syncronizationPointQueue.Enqueue(locationProvider);
-				Debug.Log("Enqueue " + _syncronizationPointQueue.Count);
+				//Debug.Log("Enqueue " + _syncronizationPointQueue.Count);
 			}
 		}
 
@@ -59,7 +48,7 @@ namespace Mapbox.Unity.Location
 		{
 			lock (_syncLock)
 			{
-				Debug.Log("Dequeue " + _syncronizationPointQueue.Count);
+				//Debug.Log("Dequeue " + _syncronizationPointQueue.Count);
 				return _syncronizationPointQueue.Dequeue();
 			}
 		}
@@ -76,17 +65,10 @@ namespace Mapbox.Unity.Location
 				var locationProvider = Dequeue();
 				if (!_syncronizationPoints.ContainsKey(locationProvider.LocationId))
 				{
-					Debug.Log("Registering id : " + locationProvider.LocationId);
+					//Debug.Log("Registering id : " + locationProvider.LocationId);
 					_syncronizationPoints.Add(locationProvider.LocationId, locationProvider);
 
-					if (buttonPrefab != null)
-					{
-						var syncButtonGO = Instantiate(buttonPrefab);
-						syncButtonGO.transform.SetParent(contentPanel);
-
-						var syncButton = syncButtonGO.GetComponent<SyncLocationInteraction>();
-						syncButton.Register(locationProvider.LocationId, OnSyncRequested);
-					}
+					ApplicationUIManager.Instance.AddToSyncPointUI(locationProvider.LocationId, locationProvider.LocationName, OnSyncRequested);
 				}
 			}
 		}
@@ -95,45 +77,7 @@ namespace Mapbox.Unity.Location
 		{
 			Debug.Log("Pressed button");
 			SendLocation(_syncronizationPoints[id].CurrentLocation);
-		}
-
-		private void OnValidate()
-		{
-			// This is for testing purposes. 
-			if (_sendEvent)
-			{
-				//var syncButtonGO = Instantiate(buttonPrefab);
-				//syncButtonGO.transform.SetParent(contentPanel);
-
-				//var syncButton = syncButtonGO.GetComponent<SyncLocationInteraction>();
-				//syncButton.Register(0, OnSyncRequested);
-
-				while (Count > 0)
-				{
-					var locationProvider = Dequeue();
-					if (!_syncronizationPoints.ContainsKey(locationProvider.LocationId))
-					{
-						Debug.Log("Registering id : " + locationProvider.LocationId);
-						_syncronizationPoints.Add(locationProvider.LocationId, locationProvider);
-
-						if (buttonPrefab != null)
-						{
-							var syncButtonGO = Instantiate(buttonPrefab);
-							syncButtonGO.transform.SetParent(contentPanel);
-
-							var syncButton = syncButtonGO.GetComponent<SyncLocationInteraction>();
-							syncButton.Register(locationProvider.LocationId, OnSyncRequested);
-						}
-					}
-				}
-				_sendEvent = false;
-			}
-
-			if (_registerEvent)
-			{
-
-				_registerEvent = false;
-			}
+			ApplicationUIManager.Instance.OnStateChanged(ApplicationState.SyncPoint_Calibration);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 namespace Mapbox.Unity.MeshGeneration.Modifiers
 {
+	using System;
 	using UnityEngine;
 	using Mapbox.Unity.MeshGeneration.Data;
 	using Mapbox.Unity.MeshGeneration.Components;
@@ -32,7 +33,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 			if (ve.Feature.Properties["destination-type"].ToString() == "conference-room")
 			{
 				string prefabName = "Prefabs/" + ve.Feature.Properties["name"].ToString() + "Model";
-				Debug.Log("PrefabName : " + prefabName);
+				//Debug.Log("PrefabName : " + prefabName);
 
 				var scale = tile.TileScale;
 				int selpos = ve.Feature.Points[0].Count / 2;
@@ -42,25 +43,16 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				met.y = 7 * scale;
 				prefabGO.transform.position = met;
 				prefabGO.transform.SetParent(ve.GameObject.transform, false);
+
+				var destPosition = prefabGO.transform.position;
+				destPosition.y = 0;
+
+				Location.DestinationPointData locationData = new Location.DestinationPointData();
+
+				locationData.SetDestinationPoint(Convert.ToInt32(ve.Feature.Properties["id"]), ve.Feature.Properties["name"].ToString(), destPosition);
+
+				Location.DestinationPointLocationProvider.Instance.Register(locationData);
 			}
-
-
-
-
-
-			//var bd = go.AddComponent<FeatureBehaviour>();
-			//bd.Init(ve.Feature);
-
-			//var tm = go.GetComponent<IFeaturePropertySettable>();
-			//if (tm != null)
-			//{
-			//	tm.Set(ve.Feature.Properties);
-			//}
-
-			//if (!_scaleDownWithWorld)
-			//{
-			//	go.transform.localScale = Vector3.one / tile.TileScale;
-			//}
 		}
 	}
 }

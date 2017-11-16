@@ -14,22 +14,24 @@ public class SyncLocationInteraction : MonoBehaviour
 
 	public event Action<int> OnSyncLocationInteraction = delegate { };
 
-	void Start()
+	void Awake()
 	{
 		_syncButton.onClick.AddListener(SyncLocation);
 	}
 
-	public void Register(int location, Action<int> callback)
+	public void Register(int location, string label, Action<int> callback)
 	{
-
+		//_syncButton.onClick.AddListener(SyncLocation);
 		_locationId = location;
+
 		OnSyncLocationInteraction += callback;
 
-		_syncLocationText.text = location.ToString();
+		_syncLocationText.text = string.IsNullOrEmpty(label) ? "Sync Point - " + location.ToString() : label;
 	}
 
 	private void SyncLocation()
 	{
+		Debug.Log("Button OnClick");
 		OnSyncLocationInteraction(_locationId);
 	}
 }

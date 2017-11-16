@@ -144,6 +144,8 @@ MonoBehaviour:
   _deviceLocationProvider: {fileID: 114549015749242158}
   _editorLocationProvider: {fileID: 114313571966154984}
   _transformLocationProvider: {fileID: 114852715929947876}
+  _fixedLocationProvider: {fileID: 114031808588773612, guid: 1d6dfbfca571246a584b83e700ae1c45,
+    type: 2}
 --- !u!114 &114313571966154984
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,11 +157,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60712efc3153a4819b0c79437175846d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _accuracy: 5
+  _autoFireEvent: 0
+  _updateInterval: 0
+  _sendEvent: 0
   _latitudeLongitude: 37.7648, -122.463
   _heading: 0
-  _accuracy: 5
-  _sendEventsOnUpdate: 1
-  _sendUpdate: 0
 --- !u!114 &114549015749242158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -184,8 +187,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a034c4eeb3293418aab101c1895844a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _map: {fileID: 0}
   _accuracy: 5
+  _autoFireEvent: 0
+  _updateInterval: 0
+  _sendEvent: 0
+  _map: {fileID: 0}
   _targetTransform: {fileID: 4778294418537766}
-  _sendEventsOnUpdate: 0
-  _sendUpdate: 0

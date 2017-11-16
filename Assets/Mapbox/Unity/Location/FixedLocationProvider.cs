@@ -21,10 +21,19 @@ namespace Mapbox.Unity.Location
 				return _currentLocation;
 			}
 		}
+		protected string _locationName;
+		public string LocationName
+		{
+			get
+			{
+				return _locationName;
+			}
+		}
 
-		public void SetLocation(int id, Vector2d latitudeLongitude, float heading)
+		public void SetLocation(int id, string name, Vector2d latitudeLongitude, float heading)
 		{
 			_locationId = id;
+			_locationName = name;
 			_currentLocation.Heading = heading;
 			_currentLocation.LatitudeLongitude = latitudeLongitude;
 			_currentLocation.Accuracy = 1;

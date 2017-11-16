@@ -26,4 +26,6 @@ MonoBehaviour:
   - Type: phone-room
     Stack: {fileID: 11400000, guid: 8c7bd733341fc0a47bfbaea08b5f15ba, type: 2}
   - Type: navigation-path
-    Stack: {fileID: 11400000, guid: 407eb7a3e54e4f14c839da27883c39ba, type: 2}
+    Stack: {fileID: 11400000, guid: a779e0f596f804b85ac3027d53627750, type: 2}
+  - Type: destination-point
+    Stack: {fileID: 11400000, guid: 2b941d2ef709e489596963a6f000b1aa, type: 2}

@@ -42,7 +42,8 @@ namespace Mapbox.Unity.Location
 	public interface IFixedLocation
 	{
 		int LocationId { get; }
+		string LocationName { get; }
 		Location CurrentLocation { get; }
-		void SetLocation(int id, Vector2d latitudeLongitude, float heading);
+		void SetLocation(int id, string name, Vector2d latitudeLongitude, float heading);
 	}
 }
