@@ -42,12 +42,18 @@
 			}
 		}
 
+		public void SendLocationEvent()
+		{
+			SetLocation();
+			SendLocation(_currentLocation);
+		}
+
 		void OnValidate()
 		{
 			if (_sendEvent)
 			{
 				_sendEvent = false;
-				SendLocation(_currentLocation);
+				SendLocationEvent();
 			}
 		}
 
