@@ -26,7 +26,7 @@
 
 		public event Action<Alignment> OnAlignmentAvailable = delegate { };
 
-		void Start()
+		void Awake()
 		{
 			_alignmentStrategy.Register(this);
 			_map.OnInitialized += Map_OnInitialized;
