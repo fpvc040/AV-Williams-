@@ -5,6 +5,7 @@
 	using Mapbox.Unity.Map;
 	using UnityEngine;
 	using UnityEngine.AI;
+	using Mapbox.Unity.Ar;
 
 	[RequireComponent(typeof(NavMeshAgent))]
 	public class PositionNavMeshAgentWithLocationProvider : MonoBehaviour
@@ -25,6 +26,8 @@
 
 		NavMeshPath path;
 		NavMeshAgent _agent;
+
+		Location _agentSourceLocation;
 
 		/// <summary>
 		/// The location provider.
@@ -54,6 +57,27 @@
 			}
 		}
 
+		[SerializeField]
+		FixedLocationSynchronizationContextBehaviour _syncContext;
+		public FixedLocationSynchronizationContextBehaviour SyncContext
+		{
+			private get
+			{
+				return _syncContext;
+			}
+			set
+			{
+				if (_syncContext != null)
+				{
+					_syncContext.OnAlignmentAvailable -= LocationProvider_OnAlignmentAvailable;
+
+				}
+				_syncContext = value;
+				_syncContext.OnAlignmentAvailable += LocationProvider_OnAlignmentAvailable;
+			}
+		}
+
+
 		Vector3 _targetPosition;
 		private void Awake()
 		{
@@ -76,34 +100,50 @@
 			}
 		}
 
+		void LocationProvider_OnAlignmentAvailable(Alignment alignment)
+		{
+			transform.rotation = Quaternion.Euler(0, alignment.Rotation, 0);
+			transform.localPosition = alignment.Position;
+			_agent.Warp(transform.position);
+		}
+
 		void LocationProvider_OnLocationUpdated(Location location)
 		{
 			Debug.Log("Agent location updated " + location.LatitudeLongitude.x + " , " + location.LatitudeLongitude.y);
 			if (_isInitialized)
 			{
-				transform.position = Conversions.GeoToWorldPosition(location.LatitudeLongitude,
-																 _map.CenterMercator,
-																 _map.WorldRelativeScale).ToVector3xz();
-				_agent.Warp(transform.position);
+				transform.localPosition = (Conversions.GeoToWorldPosition(location.LatitudeLongitude,
+				_map.CenterMercator,
+				_map.WorldRelativeScale).ToVector3xz());
+				_agentSourceLocation = location;
+				Debug.Log("Agent location updated " + transform.position.ToString());
 			}
 		}
-		void DestinationProvider_OnLocationUpdated(IDestinationPoint location)
+		void DestinationProvider_OnLocationUpdated(Location location)
 		{
-
 			if (_isInitialized)
 			{
-				//NavMesh.CalculatePath(transform.position, location.Location, int areaMask, AI.NavMeshPath path);
-				_targetPosition = location.Location;
-				_isPathSet = true;
+				_targetPosition = _map.Root.TransformPoint(
+					Conversions.GeoToWorldPosition(location.LatitudeLongitude,
+												   _map.CenterMercator,
+												   _map.WorldRelativeScale).ToVector3xz());
+
+				////Debug sphere to check the position. 
+				//var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+				//go.transform.localPosition = _targetPosition;
+				//_targetPosition = go.transform.position;
+
 				Debug.Log("Agent Destination updated " + _targetPosition);
-				_agent.destination = location.Location;
+				_agent.destination = _targetPosition;
+				_isPathSet = true;
 			}
 		}
 
 		void Update()
 		{
 			//transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * _positionFollowFactor);
-
+			if (_isPathSet)
+				Debug.DrawLine(transform.position, _targetPosition, Color.red);
 			elapsed += Time.deltaTime;
 			if (elapsed > 1.0f && _isPathSet)
 			{

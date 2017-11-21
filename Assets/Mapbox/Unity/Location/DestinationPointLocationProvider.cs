@@ -11,15 +11,9 @@ namespace Mapbox.Unity.Location
 	using System.Collections.Generic;
 	using IndoorMappingDemo;
 	using System;
+	using Mapbox.Utils;
 
-	public interface IDestinationPoint
-	{
-		int LocationId { get; }
-		string LocationName { get; }
-		Vector3 Location { get; }
-	}
-
-	public class DestinationPointData : IDestinationPoint
+	public class DestinationPointData : IFixedLocation
 	{
 		private int _locationId;
 		public int LocationId
@@ -48,20 +42,32 @@ namespace Mapbox.Unity.Location
 			}
 		}
 
-		public void SetDestinationPoint(int id, string name, Vector3 location)
+		protected Location _currentLocation;
+		public Location CurrentLocation
+		{
+			get
+			{
+				return _currentLocation;
+			}
+		}
+
+		public void SetLocation(int id, string name, Vector2d latitudeLongitude, float heading)
 		{
 			_locationId = id;
 			_locationName = name;
-			_location = location;
+			_currentLocation.Heading = heading;
+			_currentLocation.LatitudeLongitude = latitudeLongitude;
+			_currentLocation.Accuracy = 1;
+			_currentLocation.Timestamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 		}
 	}
 
 
 	public class DestinationPointLocationProvider : MonoBehaviour
 	{
-		public event Action<IDestinationPoint> OnLocationUpdated = delegate { };
+		public event Action<Location> OnLocationUpdated = delegate { };
 
-		protected void SendLocation(IDestinationPoint location)
+		protected void SendLocation(Location location)
 		{
 			OnLocationUpdated(location);
 		}
@@ -83,8 +89,8 @@ namespace Mapbox.Unity.Location
 		}
 
 		private object _syncLock = new object();
-		protected Dictionary<int, IDestinationPoint> _syncronizationPoints = new Dictionary<int, IDestinationPoint>();
-		protected Queue<IDestinationPoint> _syncronizationPointQueue = new Queue<IDestinationPoint>();
+		protected Dictionary<int, IFixedLocation> _syncronizationPoints = new Dictionary<int, IFixedLocation>();
+		protected Queue<IFixedLocation> _syncronizationPointQueue = new Queue<IFixedLocation>();
 
 		private void Awake()
 		{
@@ -98,11 +104,11 @@ namespace Mapbox.Unity.Location
 
 			if (_syncronizationPoints != null)
 			{
-				_syncronizationPoints = new Dictionary<int, IDestinationPoint>();
+				_syncronizationPoints = new Dictionary<int, IFixedLocation>();
 			}
 			if (_syncronizationPointQueue != null)
 			{
-				_syncronizationPointQueue = new Queue<IDestinationPoint>();
+				_syncronizationPointQueue = new Queue<IFixedLocation>();
 			}
 		}
 
@@ -117,7 +123,7 @@ namespace Mapbox.Unity.Location
 			}
 		}
 
-		protected void Enqueue(IDestinationPoint locationProvider)
+		protected void Enqueue(IFixedLocation locationProvider)
 		{
 			lock (_syncLock)
 			{
@@ -126,7 +132,7 @@ namespace Mapbox.Unity.Location
 			}
 		}
 
-		protected IDestinationPoint Dequeue()
+		protected IFixedLocation Dequeue()
 		{
 			lock (_syncLock)
 			{
@@ -135,7 +141,7 @@ namespace Mapbox.Unity.Location
 			}
 		}
 
-		public void Register(IDestinationPoint locationProvider)
+		public void Register(IFixedLocation locationProvider)
 		{
 			Enqueue(locationProvider);
 		}
@@ -157,7 +163,7 @@ namespace Mapbox.Unity.Location
 		public void OnSyncRequested(int id)
 		{
 			Debug.Log("Pressed button");
-			SendLocation(_syncronizationPoints[id]);
+			SendLocation(_syncronizationPoints[id].CurrentLocation);
 			ApplicationUIManager.Instance.OnStateChanged(ApplicationState.Destination_Selection);
 
 		}
