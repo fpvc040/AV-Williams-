@@ -13,5 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Active: 1
   _spawnLocation: 0
+  _destinationLocationIdKey: id
+  _destinationLocationNameKey: name
+  _destinationLocationPositionKey: location
+  _destinationLocationHeadingKey: heading
   _prefabLocation: 
   _scaleDownWithWorld: 0

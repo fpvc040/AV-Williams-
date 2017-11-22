@@ -77,7 +77,6 @@
 			}
 		}
 
-
 		Vector3 _targetPosition;
 		private void Awake()
 		{
@@ -87,6 +86,7 @@
 		{
 			LocationProvider.OnLocationUpdated += LocationProvider_OnLocationUpdated;
 			DestinationPointLocationProvider.Instance.OnLocationUpdated += DestinationProvider_OnLocationUpdated;
+			SyncContext.OnAlignmentAvailable += LocationProvider_OnAlignmentAvailable;
 			_map.OnInitialized += () => _isInitialized = true;
 			path = new NavMeshPath();
 		}
@@ -102,8 +102,9 @@
 
 		void LocationProvider_OnAlignmentAvailable(Alignment alignment)
 		{
-			transform.rotation = Quaternion.Euler(0, alignment.Rotation, 0);
-			transform.localPosition = alignment.Position;
+			Debug.Log("Alignment complete");
+
+			// Need this to place the agent correctly. Otherwise NavMesh complains of 
 			_agent.Warp(transform.position);
 		}
 
@@ -112,10 +113,11 @@
 			Debug.Log("Agent location updated " + location.LatitudeLongitude.x + " , " + location.LatitudeLongitude.y);
 			if (_isInitialized)
 			{
-				transform.localPosition = (Conversions.GeoToWorldPosition(location.LatitudeLongitude,
-				_map.CenterMercator,
-				_map.WorldRelativeScale).ToVector3xz());
 				_agentSourceLocation = location;
+				transform.position = _map.Root.TransformPoint(Conversions.GeoToWorldPosition(
+					_agentSourceLocation.LatitudeLongitude,
+					_map.CenterMercator,
+					_map.WorldRelativeScale).ToVector3xz());
 				Debug.Log("Agent location updated " + transform.position.ToString());
 			}
 		}
@@ -141,7 +143,6 @@
 
 		void Update()
 		{
-			//transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * _positionFollowFactor);
 			if (_isPathSet)
 				Debug.DrawLine(transform.position, _targetPosition, Color.red);
 			elapsed += Time.deltaTime;
@@ -155,7 +156,6 @@
 				for (int i = 0; i < path.corners.Length - 1; i++)
 					Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.red);
 			}
-
 		}
 	}
 }
