@@ -1,4 +1,5 @@
-﻿namespace Mapbox.Unity.Ar
+﻿using UnityARInterface;
+namespace Mapbox.Unity.Ar
 {
 	using Mapbox.Unity.Map;
 	using Mapbox.Unity.Location;
@@ -30,12 +31,13 @@
 		{
 			_alignmentStrategy.Register(this);
 			_map.OnInitialized += Map_OnInitialized;
-			UnityARSessionNativeInterface.ARAnchorAddedEvent += AnchorAdded;
+			ARInterface.planeAdded += ARInterface_PlaneAdded;
 		}
 
 		void OnDestroy()
 		{
 			_alignmentStrategy.Unregister(this);
+			ARInterface.planeAdded -= ARInterface_PlaneAdded;
 		}
 
 		void Map_OnInitialized()
@@ -70,9 +72,9 @@
 			_mapCamera.eulerAngles = mapCameraRotation;
 		}
 
-		void AnchorAdded(ARPlaneAnchor anchorData)
+		void ARInterface_PlaneAdded(UnityARInterface.BoundedPlane obj)
 		{
-			_lastHeight = UnityARMatrixOps.GetPosition(anchorData.transform).y;
+			_lastHeight = obj.center.y;
 		}
 	}
 }
