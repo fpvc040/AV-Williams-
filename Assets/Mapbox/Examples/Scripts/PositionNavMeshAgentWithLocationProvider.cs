@@ -81,14 +81,19 @@
 		private void Awake()
 		{
 			_agent = GetComponent<NavMeshAgent>();
+			_map.OnInitialized += Map_OnInitialized;
 		}
 		void Start()
 		{
 			LocationProvider.OnLocationUpdated += LocationProvider_OnLocationUpdated;
 			DestinationPointLocationProvider.Instance.OnLocationUpdated += DestinationProvider_OnLocationUpdated;
 			SyncContext.OnAlignmentAvailable += LocationProvider_OnAlignmentAvailable;
-			_map.OnInitialized += () => _isInitialized = true;
 			path = new NavMeshPath();
+		}
+
+		void Map_OnInitialized()
+		{
+			_isInitialized = true;
 		}
 
 		void OnDestroy()
@@ -118,9 +123,10 @@
 					_agentSourceLocation.LatitudeLongitude,
 					_map.CenterMercator,
 					_map.WorldRelativeScale).ToVector3xz());
-				Debug.Log("Agent location updated " + transform.position.ToString());
+				Debug.Log("Agent location position updated " + transform.position.ToString());
 			}
 		}
+
 		void DestinationProvider_OnLocationUpdated(Location location)
 		{
 			if (_isInitialized)
