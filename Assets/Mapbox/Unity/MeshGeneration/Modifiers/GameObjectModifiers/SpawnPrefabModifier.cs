@@ -46,7 +46,8 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 		{
 			if (ve.Feature.Properties["destination-type"].ToString() == "conference-room")
 			{
-				string prefabName = "Prefabs/" + ve.Feature.Properties["name"].ToString() + "Model";
+				string planetName = ve.Feature.Properties["name"].ToString();
+				string prefabName = "Prefabs/" + planetName + "Prefab";
 				//Debug.Log("PrefabName : " + prefabName);
 
 				var scale = tile.TileScale;
@@ -54,7 +55,8 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				var met = ve.Feature.Points[0][selpos];
 				var prefabGO = (GameObject)Instantiate(Resources.Load(prefabName));
 				prefabGO.name = prefabName;
-				met.y = 7 * scale;
+				//met.y = 7 * scale;
+				met.y = prefabGO.transform.Find(planetName+"Model").GetComponent<MeshRenderer>().bounds.extents.y +2;
 				prefabGO.transform.position = met;
 				prefabGO.transform.SetParent(ve.GameObject.transform, false);
 

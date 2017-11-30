@@ -17,6 +17,9 @@ namespace Mapbox.Unity.Ar
 		Transform _mapCamera;
 
 		[SerializeField]
+		Transform ARCamera;
+
+		[SerializeField]
 		SyncronizationPointsLocationProvider _locationProvider;
 
 		[SerializeField]
@@ -27,11 +30,16 @@ namespace Mapbox.Unity.Ar
 
 		public event Action<Alignment> OnAlignmentAvailable = delegate { };
 
+		private Vector3 initialPosition;
+		private float initialYRotation;
+
 		void Awake()
 		{
 			_alignmentStrategy.Register(this);
 			_map.OnInitialized += Map_OnInitialized;
 			ARInterface.planeAdded += ARInterface_PlaneAdded;
+			initialPosition = ARCamera.position;
+			initialYRotation = ARCamera.localEulerAngles.y;
 		}
 
 		void OnDestroy()
@@ -52,13 +60,20 @@ namespace Mapbox.Unity.Ar
 
 			var alignment = new Alignment();
 			var originalPosition = _map.Root.position;
-			alignment.Rotation = -heading + _map.Root.localEulerAngles.y;
+			float arRotationOffset = ARCamera.localEulerAngles.y - initialYRotation;
+			alignment.Rotation = -heading + _map.Root.localEulerAngles.y + arRotationOffset;
 
 			// Rotate our offset by the last heading.
-			var rotation = Quaternion.Euler(0, -heading, 0);
+			var rotation = Quaternion.Euler(0, -heading + arRotationOffset, 0);
+			Debug.Log("Initial Position" + initialPosition);
+			Debug.Log("Current Position" + ARCamera.position);
+
+			Vector3 arPositionOffset = ARCamera.position - initialPosition;
 			alignment.Position = rotation * (-Conversions.GeoToWorldPosition(location.LatitudeLongitude,
-																			 _map.CenterMercator,
-																			 _map.WorldRelativeScale).ToVector3xz() + originalPosition);
+																			_map.CenterMercator,
+																			_map.WorldRelativeScale).ToVector3xz() + originalPosition);
+
+			alignment.Position += arPositionOffset;
 			alignment.Position.y = _lastHeight;
 			Debug.Log("Alignment");
 			OnAlignmentAvailable(alignment);
