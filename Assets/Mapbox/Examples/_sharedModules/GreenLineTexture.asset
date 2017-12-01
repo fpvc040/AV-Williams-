@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d86f7dc89b3e33408563e4ada9d1c74, type: 3}
   m_Name: GreenLineTexture
   m_EditorClassIdentifier: 
-  Active: 1
+  Active: 0
   _textureTop: 1
   _useSatelliteTexture: 0
   _topMaterials:

@@ -7,7 +7,7 @@
 	using UnityEngine.AI;
 	using Mapbox.Unity.Ar;
 
-	[RequireComponent(typeof(NavMeshAgent))]
+	[RequireComponent(typeof(NavMeshAgent), typeof(LineRenderer))]
 	public class PositionNavMeshAgentWithLocationProvider : MonoBehaviour
 	{
 		[SerializeField]
@@ -21,11 +21,12 @@
 
 		bool _isInitialized;
 		bool _isPathSet = false;
-
+		public GameObject cube;
 		float elapsed = 0.0f;
 
 		NavMeshPath path;
 		NavMeshAgent _agent;
+		LineRenderer _line;
 
 		Location _agentSourceLocation;
 
@@ -81,6 +82,7 @@
 		private void Awake()
 		{
 			_agent = GetComponent<NavMeshAgent>();
+			_line = GetComponent< LineRenderer > ();
 			_map.OnInitialized += Map_OnInitialized;
 		}
 		void Start()
@@ -143,7 +145,34 @@
 
 				Debug.Log("Agent Destination updated " + _targetPosition);
 				_agent.destination = _targetPosition;
+				NavMesh.CalculatePath(transform.position, _targetPosition, NavMesh.AllAreas, path);
+				DrawPath(path);
 				_isPathSet = true;
+			}
+		}
+
+		void DrawPath(NavMeshPath navPath)
+		{
+
+			// If the path has 1 or no corners, there is no need to draw the line
+			//if (navPath.corners.Length < 2)
+			//{
+			//	return;
+			//}
+
+			// Set the array of positions to the amount of corners...
+			_line.positionCount = navPath.corners.Length;
+			Quaternion planerot = Quaternion.identity;
+			for (int i = 1; i < navPath.corners.Length; i++)
+			{
+				// Go through each corner and set that to the line renderer's position...
+				_line.SetPosition(i, navPath.corners[i]);
+
+				if (i < navPath.corners.Length - 1)
+					planerot = Quaternion.LookRotation(navPath.corners[i + 1] - navPath.corners[i]);
+
+				planerot = Quaternion.Euler(90, planerot.eulerAngles.y, planerot.eulerAngles.z);
+				GameObject go = Instantiate(cube, navPath.corners[i],planerot);
 			}
 		}
 

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7dfb85d33966074ebf2acd2de263474, type: 3}
   m_Name: FixedHeightModifier
   m_EditorClassIdentifier: 
-  Active: 1
+  Active: 0
   _flatTops: 0
   _forceHeight: 1
   _height: 1
