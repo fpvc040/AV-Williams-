@@ -21,7 +21,12 @@
 
 		bool _isInitialized;
 		bool _isPathSet = false;
-		public GameObject cube;
+		[SerializeField]
+		private GameObject directionPrefab;
+
+		[SerializeField]
+		private float tileSpacing=2;
+
 		float elapsed = 0.0f;
 
 		NavMeshPath path;
@@ -154,25 +159,46 @@
 		void DrawPath(NavMeshPath navPath)
 		{
 
-			// If the path has 1 or no corners, there is no need to draw the line
-			//if (navPath.corners.Length < 2)
-			//{
-			//	return;
-			//}
+			//If the path has 1 or no corners, there is no need to draw the line
+			if (navPath.corners.Length < 2)
+			{
+				return;
+			}
 
 			// Set the array of positions to the amount of corners...
 			_line.positionCount = navPath.corners.Length;
 			Quaternion planerot = Quaternion.identity;
-			for (int i = 1; i < navPath.corners.Length; i++)
+			for (int i = 0; i < navPath.corners.Length; i++)
 			{
 				// Go through each corner and set that to the line renderer's position...
 				_line.SetPosition(i, navPath.corners[i]);
-
+				float distance = 0;
+				Vector3 offsetVector = Vector3.zero;
 				if (i < navPath.corners.Length - 1)
-					planerot = Quaternion.LookRotation(navPath.corners[i + 1] - navPath.corners[i]);
+				{
+					//plane rotation calculation
+					offsetVector = navPath.corners[i + 1] - navPath.corners[i];
+					planerot = Quaternion.LookRotation(offsetVector);
+					distance = Vector3.Distance(navPath.corners[i + 1], navPath.corners[i]);
+					if (distance < tileSpacing)
+						continue;
 
-				planerot = Quaternion.Euler(90, planerot.eulerAngles.y, planerot.eulerAngles.z);
-				GameObject go = Instantiate(cube, navPath.corners[i],planerot);
+					planerot = Quaternion.Euler(90, planerot.eulerAngles.y, planerot.eulerAngles.z);
+
+					//plane position calculation
+					float newSpacing = 0;
+					for (int j = 0; j < distance / tileSpacing; j++)
+					{
+						newSpacing += tileSpacing;
+						var normalizedVector = offsetVector.normalized;
+						var position = navPath.corners[i] + newSpacing * normalizedVector;
+						GameObject go = Instantiate(directionPrefab, position, planerot);
+					}
+				}
+				else
+				{
+					GameObject go = Instantiate(directionPrefab, navPath.corners[i], planerot);
+				}
 			}
 		}
 

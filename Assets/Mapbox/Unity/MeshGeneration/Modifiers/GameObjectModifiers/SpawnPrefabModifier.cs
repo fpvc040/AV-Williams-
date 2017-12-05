@@ -44,7 +44,8 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 
 		public override void Run(VectorEntity ve, UnityTile tile)
 		{
-			if (ve.Feature.Properties["destination-type"].ToString() == "conference-room")
+			var featureName = ve.Feature.Properties["destination-type"].ToString();
+			if (featureName == "conference-room")
 			{
 				string planetName = ve.Feature.Properties["name"].ToString();
 				string prefabName = "Prefabs/" + planetName + "Prefab";
@@ -106,6 +107,23 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				locationData.SetLocation(id, locationName, latitudeLongitude, heading);
 
 				Location.DestinationPointLocationProvider.Instance.Register(locationData);
+			}
+			else if (featureName == "phone-room")
+			{
+				string phoneRoomName = ve.Feature.Properties["name"].ToString();
+				string prefabName = "Prefabs/Phone";
+				//Debug.Log("PrefabName : " + prefabName);
+
+				var scale = tile.TileScale;
+				int selpos = ve.Feature.Points[0].Count / 2;
+				var met = ve.Feature.Points[0][selpos];
+				var prefabGO = (GameObject)Instantiate(Resources.Load(prefabName));
+				prefabGO.name = prefabName;
+
+				prefabGO.transform.Find("Text").GetComponent<TextMesh>().text = phoneRoomName;
+				met.y = prefabGO.transform.Find("Model").GetComponent<MeshRenderer>().bounds.extents.y + 2;
+				prefabGO.transform.position = met;
+				prefabGO.transform.SetParent(ve.GameObject.transform, false);
 			}
 		}
 	}
