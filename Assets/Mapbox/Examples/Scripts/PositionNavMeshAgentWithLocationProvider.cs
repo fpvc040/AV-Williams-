@@ -6,6 +6,9 @@
 	using UnityEngine;
 	using UnityEngine.AI;
 	using Mapbox.Unity.Ar;
+	using System.Collections.Generic;
+	using System.Collections;
+	using Mapbox.IndoorMappingDemo;
 
 	[RequireComponent(typeof(NavMeshAgent), typeof(LineRenderer))]
 	public class PositionNavMeshAgentWithLocationProvider : MonoBehaviour
@@ -26,6 +29,11 @@
 
 		[SerializeField]
 		private float tileSpacing=2;
+
+		[SerializeField]
+		private ApplicationUIManager _applicationUIManager;
+
+		private List<GameObject> arrowList = new List<GameObject>();
 
 		float elapsed = 0.0f;
 
@@ -89,6 +97,7 @@
 			_agent = GetComponent<NavMeshAgent>();
 			_line = GetComponent< LineRenderer > ();
 			_map.OnInitialized += Map_OnInitialized;
+			_applicationUIManager.StateChanged += ApplicationUIManager_OnStateChanged;
 		}
 		void Start()
 		{
@@ -156,9 +165,20 @@
 			}
 		}
 
+		void ApplicationUIManager_OnStateChanged(ApplicationState obj)
+		{
+			if(obj == ApplicationState.SyncPoint_Calibration)
+			{
+				List<GameObject> arrows = arrowList;
+				StartCoroutine(ClearArrows(arrows));
+			}
+		}
+
 		void DrawPath(NavMeshPath navPath)
 		{
-
+			List<GameObject> arrows = arrowList;
+			StartCoroutine(ClearArrows(arrows));
+			arrowList.Clear();
 			//If the path has 1 or no corners, there is no need to draw the line
 			if (navPath.corners.Length < 2)
 			{
@@ -193,13 +213,24 @@
 						var normalizedVector = offsetVector.normalized;
 						var position = navPath.corners[i] + newSpacing * normalizedVector;
 						GameObject go = Instantiate(directionPrefab, position, planerot);
+						arrowList.Add(go);
 					}
 				}
 				else
 				{
 					GameObject go = Instantiate(directionPrefab, navPath.corners[i], planerot);
+					arrowList.Add(go);
 				}
 			}
+		}
+
+		private IEnumerator ClearArrows(List<GameObject>arrows)
+		{
+			if (arrowList.Count == 0)
+				yield break;
+
+			foreach (var arrow in arrows)
+				Destroy(arrow);
 		}
 
 		void Update()
@@ -217,6 +248,7 @@
 				for (int i = 0; i < path.corners.Length - 1; i++)
 					Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.red);
 			}
+
 		}
 	}
 }
