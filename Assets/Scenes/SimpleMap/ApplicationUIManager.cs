@@ -95,6 +95,8 @@
 			{
 				case ApplicationState.AR_Calibration:
 					_applicationState = ApplicationState.SyncPoint_Calibration;
+					_arCalibrationUI.SetActive(false);
+					_syncPointCalibrationUI.SetActive(true);
 					break;
 				case ApplicationState.Destination_Selection:
 					_applicationState = ApplicationState.AR_Navigation;
