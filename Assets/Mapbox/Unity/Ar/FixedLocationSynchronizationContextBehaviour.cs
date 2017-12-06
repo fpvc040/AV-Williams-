@@ -90,7 +90,8 @@ namespace Mapbox.Unity.Ar
 		void ARInterface_PlaneAdded(UnityARInterface.BoundedPlane obj)
 		{
 			_lastHeight = obj.center.y;
-			IndoorMappingDemo.ApplicationUIManager.Instance.OnStateChanged(IndoorMappingDemo.ApplicationState.AR_Navigation);
+			IndoorMappingDemo.ApplicationUIManager.Instance.OnStateChanged(IndoorMappingDemo.ApplicationState.AR_Calibration);
+			Debug.Log("Plane Detected");
 		}
 	}
 }
