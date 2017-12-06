@@ -74,7 +74,7 @@
 
 			if (_arCalibrationUI != null)
 			{
-				_arCalibrationUI.SetActive(false);
+				_arCalibrationUI.SetActive(true);
 			}
 
 			if (_destinationSelectionUI != null)
@@ -85,7 +85,7 @@
 			if (_syncPointCalibrationUI != null)
 			{
 				Debug.Log("Sync Point UI");
-				_syncPointCalibrationUI.SetActive(true);
+				_syncPointCalibrationUI.SetActive(false);
 			}
 		}
 
