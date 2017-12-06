@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using System;
 	using UnityEngine;
+	using UnityEngine.UI;
 
 	public enum ApplicationState
 	{
@@ -50,6 +51,9 @@
 		[SerializeField]
 		private FixedLocationPointUI _syncPointCalibrationUIManager;
 
+		[SerializeField]
+		private GameObject _backButton;
+
 
 
 		// Any actions that need to be triggered on Application State change. 
@@ -95,11 +99,42 @@
 				case ApplicationState.Destination_Selection:
 					_applicationState = ApplicationState.AR_Navigation;
 					_destinationSelectionUI.SetActive(false);
+					_backButton.SetActive(true);
 					break;
 				case ApplicationState.SyncPoint_Calibration:
 					_applicationState = ApplicationState.Destination_Selection;
 					_syncPointCalibrationUI.SetActive(false);
 					_destinationSelectionUI.SetActive(true);
+					_backButton.SetActive(true);
+					break;
+				default:
+					break;
+			}
+
+			//Notify subscribers application state changed. 
+			StateChanged(_applicationState);
+		}
+
+		public void OnBackButtonPressed()
+		{
+			switch (_applicationState)
+			{
+				case ApplicationState.AR_Calibration:
+					//_applicationState = ApplicationState.SyncPoint_Calibration;
+					break;
+				case ApplicationState.Destination_Selection:
+					_applicationState = ApplicationState.SyncPoint_Calibration;
+					_destinationSelectionUI.SetActive(false);
+					_syncPointCalibrationUI.SetActive(true);
+					_backButton.SetActive(false);
+					break;
+				case ApplicationState.SyncPoint_Calibration:
+					break;
+				case ApplicationState.AR_Navigation:
+					_applicationState = ApplicationState.SyncPoint_Calibration;
+					_destinationSelectionUI.SetActive(false);
+					_syncPointCalibrationUI.SetActive(true);
+					_backButton.SetActive(false);
 					break;
 				default:
 					break;
