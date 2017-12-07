@@ -70,7 +70,7 @@
 			Instance = this;
 			DontDestroyOnLoad(gameObject);
 
-			_applicationState = ApplicationState.SyncPoint_Calibration;
+			_applicationState = ApplicationState.AR_Calibration;
 
 			if (_arCalibrationUI != null)
 			{
@@ -94,9 +94,12 @@
 			switch (currentState)
 			{
 				case ApplicationState.AR_Calibration:
-					_applicationState = ApplicationState.SyncPoint_Calibration;
-					_arCalibrationUI.SetActive(false);
-					_syncPointCalibrationUI.SetActive(true);
+					if (_applicationState == ApplicationState.AR_Calibration)
+					{
+						_applicationState = ApplicationState.SyncPoint_Calibration;
+						_arCalibrationUI.SetActive(false);
+						_syncPointCalibrationUI.SetActive(true);
+					}
 					break;
 				case ApplicationState.Destination_Selection:
 					_applicationState = ApplicationState.AR_Navigation;

@@ -9,7 +9,7 @@ public class SyncLocationInteraction : MonoBehaviour
 
 	public Button _syncButton;
 	public Text _syncLocationText;
-	public Image _syncLocationImage;
+	//public Image _syncLocationImage;
 
 
 	public event Action<int> OnSyncLocationInteraction = delegate { };
@@ -26,7 +26,7 @@ public class SyncLocationInteraction : MonoBehaviour
 
 		OnSyncLocationInteraction += callback;
 
-		_syncLocationText.text = string.IsNullOrEmpty(label) ? "Sync Point - " + location.ToString() : label;
+		_syncLocationText.text = string.IsNullOrEmpty(label) ? location.ToString() : label;
 	}
 
 	private void SyncLocation()
