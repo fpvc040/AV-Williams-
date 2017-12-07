@@ -30,10 +30,21 @@ namespace Mapbox.Unity.Location
 			}
 		}
 
-		public void SetLocation(int id, string name, Vector2d latitudeLongitude, float heading)
+		protected string _locationType;
+		public string LocationType
+		{
+			get
+			{
+				return _locationType;
+			}
+		}
+
+
+		public void SetLocation(int id, string name, string type, Vector2d latitudeLongitude, float heading)
 		{
 			_locationId = id;
 			_locationName = name;
+			_locationType = type;
 			_currentLocation.Heading = heading;
 			_currentLocation.LatitudeLongitude = latitudeLongitude;
 			_currentLocation.Accuracy = 1;

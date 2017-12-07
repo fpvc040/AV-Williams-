@@ -124,7 +124,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				}
 			}
 
-			locationData.SetLocation(id, locationName, latitudeLongitude, heading);
+			locationData.SetLocation(id, locationName, featureName, latitudeLongitude, heading);
 
 			Location.DestinationPointLocationProvider.Instance.Register(locationData);
 		}

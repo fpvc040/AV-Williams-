@@ -15,7 +15,8 @@ namespace Mapbox.Unity.Location
 	{
 		int LocationId { get; }
 		string LocationName { get; }
+		string LocationType { get; }
 		Location CurrentLocation { get; }
-		void SetLocation(int id, string name, Vector2d latitudeLongitude, float heading);
+		void SetLocation(int id, string name, string type, Vector2d latitudeLongitude, float heading);
 	}
 }

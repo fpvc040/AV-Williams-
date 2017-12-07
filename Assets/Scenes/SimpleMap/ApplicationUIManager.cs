@@ -149,9 +149,9 @@
 			StateChanged(_applicationState);
 		}
 
-		public void AddToDestinationPointUI(int id, string label, Action<int> callback)
+		public void AddToDestinationPointUI(int id, string label, string type, Action<int> callback)
 		{
-			_destinationSelectionUIManager.RegisterUI(id, label, callback);
+			_destinationSelectionUIManager.RegisterUI(id, label, callback, type);
 		}
 
 		public void AddToSyncPointUI(int id, string label, Action<int> callback)

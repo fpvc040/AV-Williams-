@@ -64,7 +64,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				}
 			}
 
-			fixedLocationProvider.SetLocation(id, locationName, latitudeLongitude, heading);
+			fixedLocationProvider.SetLocation(id, locationName, "sync-point", latitudeLongitude, heading);
 		}
 	}
 }
