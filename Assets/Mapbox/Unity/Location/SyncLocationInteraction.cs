@@ -11,7 +11,6 @@ public class SyncLocationInteraction : MonoBehaviour
 	public Text _syncLocationText;
 	//public Image _syncLocationImage;
 
-
 	public event Action<int> OnSyncLocationInteraction = delegate { };
 
 	void Awake()
@@ -19,7 +18,7 @@ public class SyncLocationInteraction : MonoBehaviour
 		_syncButton.onClick.AddListener(SyncLocation);
 	}
 
-	public void Register(int location, string label, Action<int> callback)
+	public void Register(int location, string label, Action<int> callback, string color = null)
 	{
 		//_syncButton.onClick.AddListener(SyncLocation);
 		_locationId = location;

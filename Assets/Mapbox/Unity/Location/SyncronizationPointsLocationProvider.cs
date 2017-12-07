@@ -60,15 +60,27 @@ namespace Mapbox.Unity.Location
 
 		private void Update()
 		{
-			while (Count > 0)
-			{
-				var locationProvider = Dequeue();
-				if (!_syncronizationPoints.ContainsKey(locationProvider.LocationId))
-				{
-					//Debug.Log("Registering id : " + locationProvider.LocationId);
-					_syncronizationPoints.Add(locationProvider.LocationId, locationProvider);
+			//HACK : To add buttons in increasing order. 
 
-					ApplicationUIManager.Instance.AddToSyncPointUI(locationProvider.LocationId, locationProvider.LocationName, OnSyncRequested);
+			if (Count < 8)
+			{
+				return;
+			}
+			else
+			{
+				while (Count > 0)
+				{
+					var locationProvider = Dequeue();
+					if (!_syncronizationPoints.ContainsKey(locationProvider.LocationId))
+					{
+						//Debug.Log("Registering id : " + locationProvider.LocationId);
+						_syncronizationPoints.Add(locationProvider.LocationId, locationProvider);
+					}
+				}
+
+				for (int i = 0; i < 8; i++)
+				{
+					ApplicationUIManager.Instance.AddToSyncPointUI(i, _syncronizationPoints[i].LocationName, OnSyncRequested);
 				}
 			}
 		}
