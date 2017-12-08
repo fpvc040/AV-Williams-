@@ -158,14 +158,40 @@ namespace Mapbox.Unity.Location
 
 		private void Update()
 		{
-			while (Count > 0)
-			{
-				var locationProvider = Dequeue();
-				if (!_syncronizationPoints.ContainsKey(locationProvider.LocationId))
-				{
-					_syncronizationPoints.Add(locationProvider.LocationId, locationProvider);
+			//HACK : To add buttons in increasing order. 
 
-					ApplicationUIManager.Instance.AddToDestinationPointUI(locationProvider.LocationId, locationProvider.LocationName, locationProvider.LocationType, OnSyncRequested);
+			if (Count < 10)
+			{
+				return;
+			}
+			else
+			{
+				while (Count > 0)
+				{
+					var locationProvider = Dequeue();
+					if (!_syncronizationPoints.ContainsKey(locationProvider.LocationId))
+					{
+						_syncronizationPoints.Add(locationProvider.LocationId, locationProvider);
+					}
+				}
+
+				List<int> phoneRoomIds = new List<int>();
+				foreach (var id in _syncronizationPoints.Keys)
+				{
+					Debug.Log("Update Destination");
+					if (_syncronizationPoints[id].LocationType != "phone-room")
+					{
+						ApplicationUIManager.Instance.AddToDestinationPointUI(id, _syncronizationPoints[id].LocationName, _syncronizationPoints[id].LocationType, OnSyncRequested);
+					}
+					else
+					{
+						phoneRoomIds.Add(id);
+					}
+				}
+
+				foreach (var phRoomId in phoneRoomIds)
+				{
+					ApplicationUIManager.Instance.AddToDestinationPointUI(phRoomId, _syncronizationPoints[phRoomId].LocationName, _syncronizationPoints[phRoomId].LocationType, OnSyncRequested);
 				}
 			}
 		}

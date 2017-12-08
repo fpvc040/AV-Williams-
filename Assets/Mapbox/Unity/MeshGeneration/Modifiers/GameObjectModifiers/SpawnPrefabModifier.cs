@@ -92,6 +92,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 			string locationName = string.Empty;
 			string latitudeLongitudeString;
 			Vector2d latitudeLongitude = Vector2d.zero;
+			string locationColor = string.Empty;
 
 			if (feature.Properties.ContainsKey(_destinationLocationIdKey))
 			{
@@ -124,7 +125,13 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				}
 			}
 
-			locationData.SetLocation(id, locationName, featureName, latitudeLongitude, heading);
+			if (feature.Properties.ContainsKey("color"))
+			{
+				locationColor = feature.Properties["color"].ToString();
+			}
+			if (featureName == "phone-room")
+				locationColor = "phone-room";
+			locationData.SetLocation(id, locationName, locationColor, latitudeLongitude, heading);
 
 			Location.DestinationPointLocationProvider.Instance.Register(locationData);
 		}
