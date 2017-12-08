@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731707, g: 0.13414727, b: 0.12107857, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731707, g: 0.13414727, b: 0.121078566, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -479,8 +479,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 240118523}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 241.5, y: 429, z: 0}
-  m_LocalScale: {x: 0.60375, y: 0.60375, z: 0.60375}
+  m_LocalPosition: {x: 540, y: 960, z: 0}
+  m_LocalScale: {x: 1.35, y: 1.35, z: 1.35}
   m_Children:
   - {fileID: 239305428}
   - {fileID: 1125377821}
@@ -1450,7 +1450,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 623250484}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -325, y: 635.559, z: 0}
+  m_LocalPosition: {x: -325, y: 636.1111, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 240118524}
@@ -3626,7 +3626,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4039292014524688, guid: 783c33c66fe2b46698e174f89527e6c8, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114632192949337762, guid: 783c33c66fe2b46698e174f89527e6c8,
         type: 2}
@@ -4116,7 +4116,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1816195205}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 47, y: -236, z: 0}
+  m_LocalPosition: {x: 2, y: -236, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1707007986}
@@ -4124,7 +4124,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 47, y: -236}
+  m_AnchoredPosition: {x: 2, y: -236}
   m_SizeDelta: {x: 500, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1816195207
@@ -4146,8 +4146,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 60, y: 60}
-  m_Spacing: {x: 60, y: 60}
+  m_CellSize: {x: 200, y: 200}
+  m_Spacing: {x: -95, y: -95}
   m_Constraint: 1
   m_ConstraintCount: 4
 --- !u!114 &1816195208
@@ -4283,7 +4283,7 @@ Prefab:
     - target: {fileID: 224239804282779400, guid: 967bb68a714ce415cbf2b9077c97b718,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 410.55902
+      value: 411.11108
       objectReference: {fileID: 0}
     - target: {fileID: 224034275843997146, guid: 967bb68a714ce415cbf2b9077c97b718,
         type: 2}
@@ -4293,7 +4293,7 @@ Prefab:
     - target: {fileID: 224498077963229792, guid: 967bb68a714ce415cbf2b9077c97b718,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 110.55902
+      value: 111.111084
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 967bb68a714ce415cbf2b9077c97b718, type: 2}
