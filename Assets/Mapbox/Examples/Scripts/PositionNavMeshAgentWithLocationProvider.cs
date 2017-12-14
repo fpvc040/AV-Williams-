@@ -28,7 +28,7 @@
 		private GameObject directionPrefab;
 
 		[SerializeField]
-		private float tileSpacing=2;
+		private float tileSpacing = 2;
 
 		[SerializeField]
 		private ApplicationUIManager _applicationUIManager;
@@ -42,6 +42,9 @@
 		LineRenderer _line;
 
 		Location _agentSourceLocation;
+
+		bool _syncPointLocationUpdated = false;
+		bool _syncPointAlignmentUpdated = false;
 
 		/// <summary>
 		/// The location provider.
@@ -95,7 +98,7 @@
 		private void Awake()
 		{
 			_agent = GetComponent<NavMeshAgent>();
-			_line = GetComponent< LineRenderer > ();
+			_line = GetComponent<LineRenderer>();
 			_map.OnInitialized += Map_OnInitialized;
 			_applicationUIManager.StateChanged += ApplicationUIManager_OnStateChanged;
 		}
@@ -125,8 +128,7 @@
 		{
 			Debug.Log("Alignment complete");
 
-			// Need this to place the agent correctly. Otherwise NavMesh complains of 
-			_agent.Warp(transform.position);
+			_syncPointAlignmentUpdated = true;
 		}
 
 		void LocationProvider_OnLocationUpdated(Location location)
@@ -135,11 +137,8 @@
 			if (_isInitialized)
 			{
 				_agentSourceLocation = location;
-				transform.position = _map.Root.TransformPoint(Conversions.GeoToWorldPosition(
-					_agentSourceLocation.LatitudeLongitude,
-					_map.CenterMercator,
-					_map.WorldRelativeScale).ToVector3xz());
-				Debug.Log("Agent location position updated " + transform.position.ToString());
+
+				_syncPointLocationUpdated = true;
 			}
 		}
 
@@ -167,7 +166,7 @@
 
 		void ApplicationUIManager_OnStateChanged(ApplicationState obj)
 		{
-			if(obj == ApplicationState.SyncPoint_Calibration)
+			if (obj == ApplicationState.SyncPoint_Calibration)
 			{
 				List<GameObject> arrows = arrowList;
 				StartCoroutine(ClearArrows(arrows));
@@ -224,7 +223,7 @@
 			}
 		}
 
-		private IEnumerator ClearArrows(List<GameObject>arrows)
+		private IEnumerator ClearArrows(List<GameObject> arrows)
 		{
 			if (arrowList.Count == 0)
 				yield break;
@@ -235,6 +234,20 @@
 
 		void Update()
 		{
+			if (_syncPointLocationUpdated && _syncPointAlignmentUpdated)
+			{
+				transform.position = _map.Root.TransformPoint(Conversions.GeoToWorldPosition(
+															  _agentSourceLocation.LatitudeLongitude,
+															  _map.CenterMercator,
+															  _map.WorldRelativeScale).ToVector3xz());
+				Debug.Log("Agent location position updated " + transform.position.ToString());
+				// Need this to place the agent correctly. Otherwise NavMesh complains
+				Debug.Log("Agent Placed!");
+				_agent.Warp(transform.position);
+				_syncPointLocationUpdated = false;
+				_syncPointAlignmentUpdated = false;
+			}
+
 			if (_isPathSet)
 				Debug.DrawLine(transform.position, _targetPosition, Color.red);
 			elapsed += Time.deltaTime;
