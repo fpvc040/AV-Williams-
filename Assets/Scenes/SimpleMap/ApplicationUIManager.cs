@@ -104,7 +104,7 @@
 				case ApplicationState.Destination_Selection:
 					_applicationState = ApplicationState.AR_Navigation;
 					_destinationSelectionUI.SetActive(false);
-					_backButton.SetActive(false);
+					_backButton.SetActive(true);
 					break;
 				case ApplicationState.SyncPoint_Calibration:
 					_applicationState = ApplicationState.Destination_Selection;
