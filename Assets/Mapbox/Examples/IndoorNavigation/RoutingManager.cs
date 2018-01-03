@@ -11,7 +11,7 @@
 	using Mapbox.IndoorMappingDemo;
 
 	[RequireComponent(typeof(NavMeshAgent), typeof(LineRenderer))]
-	public class PositionNavMeshAgentWithLocationProvider : MonoBehaviour
+	public class RoutingManager : SingletonBehaviour<RoutingManager>
 	{
 		[SerializeField]
 		private AbstractMap _map;
@@ -95,8 +95,18 @@
 		}
 
 		Vector3 _targetPosition;
-		private void Awake()
+
+		public Vector3 CurrentTarget
 		{
+			get
+			{
+				return path.corners == null || path.corners.Length < 1 ? Vector3.zero : path.corners[0];
+			}
+		}
+
+		public override void Awake()
+		{
+			base.Awake();
 			_agent = GetComponent<NavMeshAgent>();
 			_line = GetComponent<LineRenderer>();
 			_map.OnInitialized += Map_OnInitialized;
@@ -115,8 +125,9 @@
 			_isInitialized = true;
 		}
 
-		void OnDestroy()
+		public override void OnDestroy()
 		{
+			base.OnDestroy();
 			if (LocationProvider != null)
 			{
 				LocationProvider.OnLocationUpdated -= LocationProvider_OnLocationUpdated;

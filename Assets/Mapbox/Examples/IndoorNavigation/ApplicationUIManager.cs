@@ -45,6 +45,14 @@
 
 		private ApplicationState _applicationState;
 
+		public ApplicationState CurrentState
+		{
+			get
+			{
+				return _applicationState;
+			}
+		}
+
 		[SerializeField]
 		private FixedLocationPointUI _destinationSelectionUIManager;
 
@@ -94,12 +102,9 @@
 			switch (currentState)
 			{
 				case ApplicationState.AR_Calibration:
-					if (_applicationState == ApplicationState.AR_Calibration)
-					{
-						_applicationState = ApplicationState.SyncPoint_Calibration;
-						_arCalibrationUI.SetActive(false);
-						_syncPointCalibrationUI.SetActive(true);
-					}
+					_applicationState = ApplicationState.SyncPoint_Calibration;
+					_arCalibrationUI.SetActive(false);
+					_syncPointCalibrationUI.SetActive(true);
 					break;
 				case ApplicationState.Destination_Selection:
 					_applicationState = ApplicationState.AR_Navigation;
