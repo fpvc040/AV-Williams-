@@ -41,22 +41,23 @@ namespace Mapbox.Examples
 			{
 				_spriteRenderer.gameObject.SetActive(true);
 				var targetForward = _positionTarget.forward;
-				targetForward.y = 0f;
+				//targetForward.y = 0f;
 				targetForward.Normalize();
 
-				var position = _positionTarget.position + (targetForward * 2f);
-				position.y = _height;
+				var position = _positionTarget.position + (targetForward * 1f);
+				//position.y = _height;
 				transform.position = position;
 
 				var forward = RoutingManager.Instance.CurrentTarget - transform.position;
 				forward.y = 0f;
-				transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+				transform.rotation = Quaternion.LookRotation(forward, _positionTarget.forward);
 
 				//Debug.Log("Arrow Forward : " + forward);
 
-				var red = Color.red;
-				red.a = .5f;
-				var color = Color.Lerp(red, _originalColor, Mathf.Clamp01(Vector3.Dot(targetForward, transform.forward)));
+				var fade = _originalColor;
+				fade.a = .0f;
+				//clamp beyond 1 to make the arrow visible more often
+				var color = Color.Lerp(_originalColor, fade, Mathf.Clamp(Vector3.Dot(targetForward, transform.forward), 0f, 2f));
 				_spriteRenderer.color = color;
 			}
 			else
