@@ -11,11 +11,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d86f7dc89b3e33408563e4ada9d1c74, type: 3}
   m_Name: GreenLineTexture
   m_EditorClassIdentifier: 
-  Active: 0
+  Active: 1
   _textureTop: 1
   _useSatelliteTexture: 0
   _topMaterials:
   - {fileID: 2100000, guid: d21f59fb1aed75844b6e32c2856da19f, type: 2}
-  _textureSides: 0
+  _textureSides: 1
   _sideMaterials:
   - {fileID: 2100000, guid: d21f59fb1aed75844b6e32c2856da19f, type: 2}

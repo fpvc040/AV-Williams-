@@ -13,6 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Active: 1
   _flatTops: 0
-  _forceHeight: 0
-  _height: 7
+  _forceHeight: 1
+  _height: 0
   _createSideWalls: 1

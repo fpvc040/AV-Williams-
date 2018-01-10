@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e1e9c060b6589e4e8b990a9c709bcdd, type: 3}
   m_Name: LineModifier
   m_EditorClassIdentifier: 
-  Active: 0
-  Width: 3
+  Active: 1
+  Width: 0.25
