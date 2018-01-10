@@ -1054,7 +1054,7 @@ Prefab:
     - target: {fileID: 224265947645252802, guid: ec317c73fb5a148af98b0b8b2133de15,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 206.91605
+      value: 207.08041
       objectReference: {fileID: 0}
     - target: {fileID: 224819242624043370, guid: ec317c73fb5a148af98b0b8b2133de15,
         type: 2}
@@ -1069,7 +1069,7 @@ Prefab:
     - target: {fileID: 224819242624043370, guid: ec317c73fb5a148af98b0b8b2133de15,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 206.91605
+      value: 207.08041
       objectReference: {fileID: 0}
     - target: {fileID: 224290111670432368, guid: ec317c73fb5a148af98b0b8b2133de15,
         type: 2}
@@ -2307,10 +2307,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1169154027}
-  - component: {fileID: 1169154026}
-  - component: {fileID: 1169154029}
-  - component: {fileID: 1169154028}
   - component: {fileID: 1169154030}
+  - component: {fileID: 1169154026}
+  - component: {fileID: 1169154028}
+  - component: {fileID: 1169154029}
   m_Layer: 9
   m_Name: ArAlignedMap
   m_TagString: Untagged
@@ -2603,6 +2603,11 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1193644900}
+--- !u!212 &1257544216 stripped
+SpriteRenderer:
+  m_PrefabParentObject: {fileID: 212496270685707780, guid: 13a698a988f4e44e78ba3fb794fb70f9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1627487532}
 --- !u!1 &1298690089
 GameObject:
   m_ObjectHideFlags: 0
@@ -3314,7 +3319,7 @@ Prefab:
         type: 2}
       propertyPath: _spriteRenderer
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1257544216}
     - target: {fileID: 1012800610358282, guid: 13a698a988f4e44e78ba3fb794fb70f9, type: 2}
       propertyPath: m_IsActive
       value: 1
