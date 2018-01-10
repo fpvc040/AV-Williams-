@@ -9,18 +9,13 @@ namespace Mapbox.Unity.Location
 
 		private object _syncLock = new object();
 		Dictionary<int, IFixedLocation> _syncronizationPoints = new Dictionary<int, IFixedLocation>();
-		Queue<IFixedLocation> _syncronizationPointQueue = new Queue<IFixedLocation>();
-
+		bool _isUISetupComplete = false;
 
 		private void Awake()
 		{
 			if (_syncronizationPoints != null)
 			{
 				_syncronizationPoints = new Dictionary<int, IFixedLocation>();
-			}
-			if (_syncronizationPointQueue != null)
-			{
-				_syncronizationPointQueue = new Queue<IFixedLocation>();
 			}
 		}
 
@@ -30,7 +25,7 @@ namespace Mapbox.Unity.Location
 			{
 				lock (_syncLock)
 				{
-					return _syncronizationPointQueue.Count;
+					return _syncronizationPoints.Count;
 				}
 			}
 		}
@@ -39,17 +34,11 @@ namespace Mapbox.Unity.Location
 		{
 			lock (_syncLock)
 			{
-				_syncronizationPointQueue.Enqueue(locationProvider);
-				//Debug.Log("Enqueue " + _syncronizationPointQueue.Count);
-			}
-		}
-
-		protected IFixedLocation Dequeue()
-		{
-			lock (_syncLock)
-			{
-				//Debug.Log("Dequeue " + _syncronizationPointQueue.Count);
-				return _syncronizationPointQueue.Dequeue();
+				if (!_syncronizationPoints.ContainsKey(locationProvider.LocationId))
+				{
+					Debug.Log("Registering id : " + locationProvider.LocationId);
+					_syncronizationPoints.Add(locationProvider.LocationId, locationProvider);
+				}
 			}
 		}
 
@@ -62,26 +51,17 @@ namespace Mapbox.Unity.Location
 		{
 			//HACK : To add buttons in increasing order. 
 
-			if (Count < 8)
+			if (Count < 8 || _isUISetupComplete == true)
 			{
 				return;
 			}
 			else
 			{
-				while (Count > 0)
-				{
-					var locationProvider = Dequeue();
-					if (!_syncronizationPoints.ContainsKey(locationProvider.LocationId))
-					{
-						//Debug.Log("Registering id : " + locationProvider.LocationId);
-						_syncronizationPoints.Add(locationProvider.LocationId, locationProvider);
-					}
-				}
-
-				for (int i = 0; i < 8; i++)
+				for (int i = 0; i < Count; i++)
 				{
 					ApplicationUIManager.Instance.AddToSyncPointUI(i, _syncronizationPoints[i].LocationName, OnSyncRequested);
 				}
+				_isUISetupComplete = true;
 			}
 		}
 
