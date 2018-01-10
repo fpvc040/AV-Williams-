@@ -13,6 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Active: 1
   _syncLocationIdKey: id
-  _syncLocationNameKey: 
+  _syncLocationNameKey: name
   _syncLocationPositionKey: location
   _syncLocationHeadingKey: heading

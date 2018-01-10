@@ -40,7 +40,6 @@ namespace Mapbox.Unity.Ar
 		void OnDestroy()
 		{
 			_alignmentStrategy.Unregister(this);
-			ARInterface.planeAdded -= ARInterface_PlaneAdded;
 		}
 
 		void Map_OnInitialized()
@@ -89,6 +88,7 @@ namespace Mapbox.Unity.Ar
 			IndoorMappingDemo.ApplicationUIManager.Instance.OnStateChanged(IndoorMappingDemo.ApplicationState.AR_Calibration);
 			ARInterface.planeAdded -= ARInterface_PlaneAdded;
 			Debug.Log("Plane Detected");
+			ARInterface.planeAdded -= ARInterface_PlaneAdded;
 		}
 	}
 }
