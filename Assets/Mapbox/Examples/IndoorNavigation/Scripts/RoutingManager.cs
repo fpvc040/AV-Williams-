@@ -100,7 +100,9 @@
 		{
 			get
 			{
-				return path.corners == null || path.corners.Length < 1 ? Vector3.zero : path.corners[0];
+				//return path.corners == null || path.corners.Length < 1 ? Vector3.zero : path.corners[0];
+
+				return _agent.transform.position;
 			}
 		}
 
@@ -257,6 +259,18 @@
 				_agent.Warp(transform.position);
 				_syncPointLocationUpdated = false;
 				_syncPointAlignmentUpdated = false;
+			}
+
+			if (_agent.hasPath)
+			{
+				if (Vector3.Distance(_agent.transform.position, Camera.main.transform.position) > 5f)
+				{
+					_agent.isStopped = true;
+				}
+				else
+				{
+					_agent.isStopped = false;
+				}
 			}
 
 			if (_isPathSet)
