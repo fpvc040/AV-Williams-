@@ -30,6 +30,9 @@ namespace Mapbox.Unity.Ar
 		[SerializeField]
 		float _minimumDeltaDistance = 2f;
 
+		[SerializeField]
+		float _minimumDesiredAccuracy = 5f;
+
 		SimpleAutomaticSynchronizationContext _synchronizationContext;
 
 		float _lastHeading;
@@ -113,16 +116,30 @@ namespace Mapbox.Unity.Ar
 		{
 			if (location.IsLocationUpdated)
 			{
-				var latitudeLongitude = location.LatitudeLongitude;
-				Unity.Utilities.Console.Instance.Log(string.Format("Location: {0},{1}\tAccuracy: {2}\tHeading: {3}",
-																   latitudeLongitude.x, latitudeLongitude.y, location.Accuracy, location.Heading), "lightblue");
+				if (location.Accuracy > _minimumDesiredAccuracy) //With this line, we can control accuracy of Gps updates. 
+				{
+					Unity.Utilities.Console.Instance.Log("Gps update ignored due to bad accuracy", "red");
+				}
+				else
+				{
+					var latitudeLongitude = location.LatitudeLongitude;
+					Unity.Utilities.Console.Instance.Log(
+						string.Format(
+							"Location: {0},{1}\tAccuracy: {2}\tHeading: {3}"
+							, latitudeLongitude.x
+							, latitudeLongitude.y
+							, location.Accuracy, location.Heading
+						)
+						, "lightblue"
+					);
 
-				var position = Conversions.GeoToWorldPosition(latitudeLongitude,
-															 	_map.CenterMercator,
-															 	_map.WorldRelativeScale).ToVector3xz();
+					var position = Conversions.GeoToWorldPosition(latitudeLongitude, _map.CenterMercator, _map.WorldRelativeScale).ToVector3xz();
+					_synchronizationContext.AddSynchronizationNodes(location, position, _arPositionReference.localPosition);
+				}
 
-				_synchronizationContext.AddSynchronizationNodes(location, position, _arPositionReference.localPosition);
+
 			}
+
 		}
 
 		void SynchronizationContext_OnAlignmentAvailable(Ar.Alignment alignment)
