@@ -18,14 +18,28 @@ MonoBehaviour:
   _defaultStack: {fileID: 0}
   Stacks:
   - Type: sync-point
+    Types:
+    - sync-point
     Stack: {fileID: 11400000, guid: 6cc3c3c617b7c4f9bb5a57bb65b89385, type: 2}
   - Type: wall
-    Stack: {fileID: 11400000, guid: 5915928cb8624134a87d7604161e28ae, type: 2}
+    Types:
+    - wall
+    Stack: {fileID: 11400000, guid: 75a2e5255416449f4bb57bc94442b83e, type: 2}
   - Type: conference-room
+    Types:
+    - conference-room
     Stack: {fileID: 11400000, guid: d234d20d9d280f84cb21cb7d8cac3cab, type: 2}
   - Type: phone-room
+    Types:
+    - phone-room
     Stack: {fileID: 11400000, guid: 8c7bd733341fc0a47bfbaea08b5f15ba, type: 2}
   - Type: navigation-path
+    Types:
+    - navigation-path
     Stack: {fileID: 11400000, guid: a779e0f596f804b85ac3027d53627750, type: 2}
   - Type: destination-point
+    Types:
+    - destination-point
     Stack: {fileID: 11400000, guid: 2b941d2ef709e489596963a6f000b1aa, type: 2}
+  _enableCoroutines: 0
+  _entityPerCoroutine: 20
