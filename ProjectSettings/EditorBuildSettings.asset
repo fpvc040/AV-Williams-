@@ -6,11 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/ButtonSyncronizationWorldScale.unity
+    path: Assets/Scenes/AV_williams.unity
     guid: fb6b3026abb344df8a2cfe2ee5c50f24
-  - enabled: 0
-    path: Assets/Scenes/ImageRecognitionSynchronization.unity
-    guid: d5c8c8d5bcaa34b07a60ecb2c88e5b06
-  - enabled: 0
-    path: Assets/UnityARKitPlugin/Examples/UnityARKitScene/UnityARKitScene.unity
-    guid: c159f2591a9b5c843b0a0442451f78f8

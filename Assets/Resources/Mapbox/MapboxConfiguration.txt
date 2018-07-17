@@ -1,1 +1,1 @@
-{"AccessToken":"pk.eyJ1IjoiZGF2aWRyaG9kZXMiLCJhIjoiY2owd3htdmlmMDA2bDMybmRyNzZ0ZWd0YSJ9.p3D6QfRRpcd0jQDDvrWTaA","MemoryCacheSize":0,"MbTilesCacheSize":0,"DefaultTimeout":10}
+{"AccessToken":"pk.eyJ1IjoidGFydTA5MDQiLCJhIjoiY2pnemJnc3RuMGd1ODMwbzRxbzJybHh2ZyJ9.3zidAjraDcx4Sr8CuKqrKg","MemoryCacheSize":500,"MbTilesCacheSize":2000,"DefaultTimeout":30}
